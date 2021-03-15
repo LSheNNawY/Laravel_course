@@ -17,7 +17,7 @@
                     <td>{{ $post->id }}</td>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->user->name }}</td>
-                    <td>{{ $post->created_at }}</td>
+                    <td>{{ $post->created_at->diffForHumans() }}</td>
                 </tr>
                 </tbody>
             </table>

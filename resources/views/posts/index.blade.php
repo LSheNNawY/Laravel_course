@@ -22,7 +22,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td> {{ $post->title }} </td>
                     <td> {{ $post->user->name }} </td>
-                    <td> {{ $post->created_at }} </td>
+                    <td> {{ $post->created_at->diffForHumans()}} </td>
 
                     <td>
                         <a href="{{ route("posts.show", $post->id) }}" class="btn btn-info">Show</a>

@@ -98,8 +98,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-        $post->delete();
-        return redirect()->route('posts.index');
+        if (\request()->ajax()) {
+            $post = Post::find($id);
+            return $post->delete();
+        }
     }
 }
