@@ -6,13 +6,22 @@
             <form action="{{ route("posts.store") }}" method="post">
                 @csrf
                 <div class="form-group">
-                    <label for="Name">Post creator</label>
-                    <input type="text" name="name" id="Name" class="form-control" value="{{ $post['posted_by'] }}" aria-describedby="helpId">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" class="form-control" value="{{ $post->title }}" aria-describedby="helpId">
                 </div>
                 <div class="form-group">
-                    <label for="post">Title</label>
-                    <textarea class="form-control" name="post" id="post" cols="30" rows="10">{{ $post['title'] }}</textarea>
+                    <label for="description">Description</label>
+                    <textarea class="form-control" name="description" id="description" cols="30" rows="10">{{ $post->description }}</textarea>
                 </div>
+                <div class="form-group">
+                    <label for="post_creator">Post creator</label>
+                    <select name="post_creator" id="post_creator" class="form-control">
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ ($post->post_creator == $user->id)? "selected" : "" }}>{{ ucfirst($user->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <button class="btn btn-info">Edit</button>
                 </div>

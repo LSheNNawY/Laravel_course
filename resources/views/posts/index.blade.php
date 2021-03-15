@@ -5,7 +5,7 @@
         <div class="col-md-12 mb-3">
             <a href="{{ route("posts.create") }}" class="btn btn-success"> New Post</a>
         </div>
-        <div class="col-md-8 mx-auto">
+        <div class="col-md-12 mx-auto">
             <table class="table table-striped">
                 <thead class="thead-inverse">
                 <tr>
@@ -20,13 +20,18 @@
                 @foreach($posts as $index => $post)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td> {{ $post['title'] }} </td>
-                    <td> {{ $post['posted_by'] }} </td>
-                    <td> {{ $post['created_at'] }} </td>
+                    <td> {{ $post->title }} </td>
+                    <td> {{ $post->user->name }} </td>
+                    <td> {{ $post->created_at }} </td>
+
                     <td>
-                        <a href="{{ route("posts.show", $post['id']) }}" class="btn btn-info">Show</a>
-                        <a href="{{ route("posts.edit", $post['id']) }}" class="btn btn-primary">Edit</a>
-                        <a href="{{ route("posts.destroy", $post['id']) }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ route("posts.show", $post->id) }}" class="btn btn-info">Show</a>
+                        <a href="{{ route("posts.edit", $post->id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route("posts.destroy", $post->id) }}"  method="post" class="d-inline">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
@@ -34,5 +39,14 @@
             </table>
         </div>
     </dev>
+    <div class="row">
+        <div class="col-md-3 m-auto">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {{ $posts->links() }}
+                </ul>
+            </nav>
+        </div>
+    </div>
 @endsection
 

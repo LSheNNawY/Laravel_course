@@ -14,10 +14,10 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>{{ $post['id'] }}</td>
-                    <td> {{ $post['title'] }} </td>
-                    <td> {{ $post['posted_by'] }} </td>
-                    <td> {{ $post['created_at'] }} </td>
+                    <td>{{ $post->id }}</td>
+                    <td>{{ $post->title }}</td>
+                    <td>{{ $post->user->name }}</td>
+                    <td>{{ $post->created_at }}</td>
                 </tr>
                 </tbody>
             </table>

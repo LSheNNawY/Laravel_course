@@ -6,12 +6,20 @@
             <form action="{{ route("posts.store") }}" method="post">
                 @csrf
                 <div class="form-group">
-                    <label for="Name">Name</label>
-                    <input type="text" name="name" id="Name" class="form-control" placeholder="" aria-describedby="helpId">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" class="form-control" placeholder="" aria-describedby="helpId">
                 </div>
                 <div class="form-group">
-                    <label for="post">Post</label>
-                    <textarea class="form-control" name="post" id="post" cols="30" rows="10"></textarea>
+                    <label for="description">Description</label>
+                    <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post_creator">Post creator</label>
+                    <select name="post_creator" id="post_creator" class="form-control">
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-info">Add</button>
