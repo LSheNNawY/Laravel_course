@@ -23,7 +23,7 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->word(3),
+            'title' => $this->faker->sentence(2),
             'description' => $this->faker->sentence,
             'created_at' => now(),
             'post_creator' => function() {

@@ -2,9 +2,13 @@
 
 @section("content")
     <dev class="row">
+        @if($errors->any())
+            @include('layouts.includes._errors')
+        @endif
         <div class="col-md-8  mx-auto">
-            <form action="{{ route("posts.store") }}" method="post">
+            <form action="{{ route("posts.update", $post->slug) }}" method="post">
                 @csrf
+                @method('PUT')
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title" class="form-control" value="{{ $post->title }}" aria-describedby="helpId">
@@ -23,7 +27,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-info">Edit</button>
+                    <button class="btn btn-info" type="submit">Update</button>
                 </div>
             </form>
         </div>

@@ -8,5 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name("home");
 
-Route::resource("posts", PostsController::class);
+Auth::routes();
+Route::resource("posts", PostsController::class)->middleware('auth');
 
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\storePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PostsController extends Controller
 {
-    public $posts = [
-        ["id" => "1", "title" => "Learn PHP", "posted_by" => "Ahmed", "created_at" => "2018-04-10"],
-        ["id" => "2", "title" => "Solid principles", "posted_by" => "Mohamed", "created_at" => "2018-04-12"],
-        ["id" => "3", "title" => "Design patterns", "posted_by" => "Ali", "created_at" => "2018-04-13"],
-    ];
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response
      */
     public function index()
     {
@@ -29,7 +29,7 @@ class PostsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response
      */
     public function create()
     {
@@ -40,10 +40,10 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param storePostRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(StorePostRequest $request): RedirectResponse
     {
         Post::create($request->all());
         return redirect()->route("posts.index");
@@ -52,12 +52,13 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @param $slugString
+     * @return Application|Factory|View|Response
      */
-    public function show($id)
+    public function show($slugString)
     {
-        $post = Post::find($id);
+//        $post = Post::find($id);
+        $post = Post::findBySlug($slugString);
 
         return view("posts.show", compact("post"));
     }
@@ -65,41 +66,46 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @param $slugString
+     * @return Application|Factory|View|RedirectResponse
      */
-    public function edit($id)
+    public function edit($slugString)
     {
-        $post = Post::find($id);
-        $users = User::all();
-        return view("posts.edit", compact('post', 'users'));
+        $post = Post::findBySlug($slugString);
+        if ($post) {
+            $users = User::all();
+            return view("posts.edit", compact('post', 'users'));
+        }
+
+        return back();
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param storePostRequest $request
+     * @param $slugString
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(storePostRequest $request, $slugString): RedirectResponse
     {
-        $post = Post::find($id);
-        $test  = $post->update($request->all());
-        dd($test);
+        $post = Post::findBySlug($slugString);
+        $request->slug = $request->title;
+        $upd = $post->update($request->all());
         return redirect()->route('posts.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param $slugString
+     * @return bool
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($slugString): bool
     {
         if (\request()->ajax()) {
-            $post = Post::find($id);
+            $post = Post::findBySlug($slugString);
             return $post->delete();
         }
     }

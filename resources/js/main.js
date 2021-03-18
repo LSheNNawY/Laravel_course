@@ -6,7 +6,9 @@ $.ajaxSetup({
 
 (function () {
 
-    $(".deletePost").click( function (e) {
+
+
+    $("button[type=submit]").click( function (e) {
         e.preventDefault();
 
         let btn = $(this);

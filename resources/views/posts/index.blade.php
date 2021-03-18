@@ -12,6 +12,7 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Posted By</th>
+                    <th>Slug</th>
                     <th>Created At</th>
                     <th>Actions</th>
                 </tr>
@@ -22,15 +23,16 @@
                     <td>{{ $index + 1 }}</td>
                     <td> {{ $post->title }} </td>
                     <td> {{ $post->user->name }} </td>
+                    <td> {{ $post->slug }}</td>
                     <td> {{ $post->created_at->diffForHumans()}} </td>
 
                     <td>
-                        <a href="{{ route("posts.show", $post->id) }}" class="btn btn-info">Show</a>
-                        <a href="{{ route("posts.edit", $post->id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route("posts.destroy", $post->id) }}"  method="post" class="d-inline">
+                        <a href="{{ route("posts.show", $post->slug) }}" class="btn btn-info">Show</a>
+                        <a href="{{ route("posts.edit", $post->slug) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route("posts.destroy", $post->slug) }}"  method="post" class="d-inline">
                             @method('delete')
                             @csrf
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger deletePost">Delete</button>
                         </form>
                     </td>
                 </tr>

@@ -18,8 +18,8 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->integer('post_creator');
+            $table->string('slug')->nullable();
             $table->timestamps();
-
         });
     }
 
